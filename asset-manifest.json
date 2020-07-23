@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/static/css/main.464dc51a.chunk.css",
+    "main.js": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/static/js/main.4367dd91.chunk.js",
+    "main.js.map": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/static/js/main.4367dd91.chunk.js.map",
+    "runtime-main.js": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/static/js/runtime-main.b7270ea3.js",
+    "runtime-main.js.map": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/static/js/runtime-main.b7270ea3.js.map",
+    "static/js/2.ae7a00b4.chunk.js": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/static/js/2.ae7a00b4.chunk.js",
+    "static/js/2.ae7a00b4.chunk.js.map": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/static/js/2.ae7a00b4.chunk.js.map",
+    "index.html": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/index.html",
+    "precache-manifest.4342d15a9c4b7a36537a4fc8302ba720.js": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/precache-manifest.4342d15a9c4b7a36537a4fc8302ba720.js",
+    "service-worker.js": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/service-worker.js",
+    "static/css/main.464dc51a.chunk.css.map": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/static/css/main.464dc51a.chunk.css.map",
+    "static/js/2.ae7a00b4.chunk.js.LICENSE.txt": "/ZavadskiyAS.github.io/goit-react-hw-05-phonebook-ctx/static/js/2.ae7a00b4.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b7270ea3.js",
+    "static/js/2.ae7a00b4.chunk.js",
+    "static/css/main.464dc51a.chunk.css",
+    "static/js/main.4367dd91.chunk.js"
+  ]
+}
