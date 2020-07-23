@@ -1,76 +1,105 @@
 import React, { Component } from 'react';
-import Section from './section/Section';
-import PhoneBook from './section/phoneBook/PhoneBook';
-import ContactsList from './section/contactsList/ContactsList';
-import FilterInput from './section/filterInput/FilterInput';
-import storage from './ui/storage';
+import ContactForm from './contactForm/ContactForm';
+import { v4 as uuid } from 'uuid';
+import styles from './App.module.css';
+import ContactList from './contactList/ContactList';
+import Filter from './filter/Filter';
+import withTheme from './hoc/withTheme';
+import { Logo } from './logo/Logo';
+import Alert from './alert/Alert';
 
 class App extends Component {
+  static alertTimeoutHandle = 0;
+
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Gert Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
+    alert: '',
   };
 
   componentDidMount() {
-    const loadContacts = storage.load('contacts');
-    if (loadContacts) {
-      this.setState({ contacts: loadContacts });
-    }
+    const storedContacts = JSON.parse(localStorage.getItem('contacts'));
+    storedContacts &&
+      storedContacts.length > 0 &&
+      this.setState({ contacts: storedContacts });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    prevState.contacts !== this.state.contacts &&
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  }
+
+  addContact = (name, number) => {
     const { contacts } = this.state;
-    storage.save('contacts', contacts);
-  }
 
-  getContactInfo = newContact => {
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, newContact],
-    }));
-  };
+    const contact = {
+      id: uuid(),
+      name: name,
+      number: number,
+    };
 
-  filterInput = e => {
-    this.setState({ filter: e.target.value });
-  };
-
-  contactsFilter = () => {
-    if (this.state.contacts.length > 2) {
-      return this.state.contacts.filter(contact =>
-        contact.name.toLowerCase().includes(this.state.filter.toLowerCase()),
-      );
+    if (contacts && contacts.find(contact => name === contact.name)) {
+      this.showAlert(`${contact.name} already exists`);
+    } else {
+      this.setState(prevState => {
+        return {
+          contacts: [...prevState.contacts, contact],
+        };
+      });
     }
-    return this.state.contacts;
   };
 
-  deleteContact = e => {
-    const { id } = e.target;
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts.filter(contact => contact.id !== id)],
-    }));
+  showAlert = message => {
+    this.setState({ alert: message });
+    clearTimeout(this.alertTimeoutHandle);
+    this.alertTimeoutHandle = setTimeout(() => {
+      this.setState({ alert: '' });
+    }, 3000);
+  };
+
+  removeContact = id => {
+    this.setState(prevState => {
+      return {
+        contacts: prevState.contacts.filter(contact => contact.id !== id),
+      };
+    });
+  };
+
+  changeFilter = filter => {
+    this.setState({ filter });
+  };
+
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase()),
+    );
   };
 
   render() {
-    const { contacts, filter } = this.state;
+    const { contacts, filter, alert } = this.state;
+    const { themeCfg } = this.props;
     return (
       <>
-        <Section title="Phonebook">
-          <PhoneBook getContactInfo={this.getContactInfo} contacts={contacts} />
-        </Section>
-        <Section title="Contacts">
-          <FilterInput filter={filter} filterInput={this.filterInput} />
-          <ContactsList
-            contacts={this.contactsFilter()}
-            deleteContact={this.deleteContact}
+        <div style={{ color: themeCfg.fontColor, background: themeCfg.bodybg }}>
+          <button onClick={this.props.toggle}>Change theme</button>
+          <Logo />
+          {alert && <Alert title={alert} />}
+          <ContactForm onSubmit={this.addContact} />
+
+          <h2 className={styles.sectionTitle}>Contacts</h2>
+          {contacts.length > 1 && (
+            <Filter value={filter} onChangeFilter={this.changeFilter} />
+          )}
+          <ContactList
+            onRemoveContact={this.removeContact}
+            contacts={this.getFilteredContacts()}
           />
-        </Section>
-      </>
+        </div>
+      </>  
     );
   }
 }
 
-export default App;
+export default withTheme(App);
